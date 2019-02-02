@@ -16,7 +16,7 @@ RUN pip install -r requirements.txt
 #Now we make the directory in the image that we can use to store to store our application software code
 
 # Creates an empty folder inside app folder
-RUN mkdr /app
+RUN mkdir /app
 # Then switches to that default directory
 WORKDIR /app
 # Copies the app folder in local machine to app folder created on image.
