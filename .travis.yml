@@ -1,0 +1,15 @@
+# The first line we are going to tell it what language it expects the travis to be in.
+language: python
+# In Dockerfile we have used python 3.7. But here we choose the stable version.
+python:
+  - "3.6"
+services:
+  -docker
+# Now we specify the before script a script the travis will run before it is going to do automation commands that is going to be inputed next.
+# before doing anything we need to install the docker components
+before_script: pip install docker-compose
+
+# Docker composed commands for running our tests.
+script:
+  # running the unit test and the linting tool which will be installed.
+  - docker-compose run app sh -c "python manage.py test && flake8"
