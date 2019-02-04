@@ -119,3 +119,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+# core is the name of our app
+# User is name of model in our app that we assigned as custom user model
+AUTH_USER_MODEL = 'core.User'
