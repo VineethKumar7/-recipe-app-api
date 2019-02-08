@@ -1,22 +1,35 @@
-# We are going to use create user function to crate a user
-# Then verify that user has been created.
 from django.test import TestCase
-# you can import the user model directly but importing this way
-# helps in changing the user model dynamic way. You can change all by chaning one.
+
 from django.contrib.auth import get_user_model
 
+
 class ModelTests(TestCase):
+    """ Model that contain test fun """
     def test_create_user_with_email_successful(self):
         """ Test crating a new user with an email is successful """
-        # Getting username and password we are verify the account exists.
         email = 'test@londonappdev.com'
         password = 'Testpass123'
-        # This is calling the create user function on the user manager from the user model.
         user = get_user_model().objects.create_user(
-        email = email,
-        password = password
-        )
-        # making sure that the user was created correctly.
-        self.assertEqual(user.email,email)
-        #Since the password is encripted.We can't check the password in the same way as this.
+            email=email, password=password)
+        self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
+
+    def test_new_user_email_normalized(self):
+        """Test the email for new user is normalized. """
+        email = 'test@LONDONAPPDEV.COM'
+        user = get_user_model().objects.create_user(email, 'test123')
+        self.assertEqual(user.email, email.lower())
+
+    def test_new_user_invalid_email(self):
+        """Test creating user with no email raises error"""
+        with self.assertRaises(ValueError):
+            get_user_model().objects.create_user(None, 'test123')
+
+    def test_create_new_superuser(self):
+        """Test crating a new superuser. """
+        user = get_user_model().objects.create_superuser(
+            'test@londonappdev.com',
+            'test123'
+        )
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.is_staff)
